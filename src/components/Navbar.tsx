@@ -4,6 +4,7 @@ import {
     SignUpButton,
     SignedIn,
     SignedOut,
+    UserButton,
 } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 
@@ -141,6 +142,7 @@ const Navbar = () => {
                             Logout
                         </button>
                     </SignOutButton>
+                    <UserButton></UserButton>
                 </SignedIn>
                 <SignedOut>
                     <SignInButton>

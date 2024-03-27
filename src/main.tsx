@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { BrowserRouter } from "react-router-dom";
+import StreamVideoClientProvider from "./contexts/StreamVideoClientProvider.tsx";
 
 const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -14,9 +15,11 @@ if (!publishableKey) {
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <ClerkProvider publishableKey={publishableKey}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
+            <StreamVideoClientProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </StreamVideoClientProvider>
         </ClerkProvider>
     </React.StrictMode>
 );
