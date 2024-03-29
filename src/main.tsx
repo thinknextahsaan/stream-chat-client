@@ -5,6 +5,7 @@ import "./index.css";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { BrowserRouter } from "react-router-dom";
 import StreamVideoClientProvider from "./contexts/StreamVideoClientProvider.tsx";
+import '@stream-io/video-react-sdk/dist/css/styles.css';
 
 const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
