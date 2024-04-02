@@ -1,53 +1,49 @@
-import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import {
-    Call,
-    StreamCall,
-    StreamTheme,
-    StreamVideoClient,
-    useCallStateHooks,
-    useStreamVideoClient,
-} from "@stream-io/video-react-sdk";
 import { Loader } from "lucide-react";
+import { useGetCallById } from "../hooks/useGetCallById";
+import { useUser } from "@clerk/clerk-react";
+import { StreamCall, StreamTheme } from "@stream-io/video-react-sdk";
+import MeetingPage from "../components/MeetingPage";
 
 const Meeting = () => {
     const { callid } = useParams();
-    const [call, setCall] = useState<undefined | Call>();
-    const client = useStreamVideoClient();
+    const { call, callLoading } = useGetCallById(callid as string);
+    const { user, isLoaded: userLoaded } = useUser();
 
-    useEffect(() => {
-        if (!client || !callid) return;
+    // if (!userLoaded || callLoading) {
+    //     return <Loader className="animate-spin" />;
+    // }
 
-        async function getCallDetails(
-            client: StreamVideoClient,
-            callid: string
-        ) {
-            let call = client.call("default", callid);
-            await call.get();
-            console.log(call)
-            setCall(call);
-        }
+    // if (!call) {
+    //     return (
+    //         <div>
+    //             <h2>Call Not Found?</h2>
+    //         </div>
+    //     );
+    // }
 
-        getCallDetails(client, callid);
-    }, [callid]);
-
-
-
-    if(!call){
-        return <div className="h-screen flex items-center justify-center">
-            <Loader className="animate-spin"/>
-        </div>
-    }
+    // return <div>Meeting Join Screen</div>;
 
     return (
-        <StreamTheme>
-            <StreamCall call={call}>
+        <StreamCall call={call}>
+            <StreamTheme>
                 <Navbar />
-
-                <div className="py-10"></div>
-            </StreamCall>
-        </StreamTheme>
+                <div>
+                    {!userLoaded || callLoading ? (
+                        <div className="h-screen flex items-center justify-center">
+                            <Loader className="animate-spin" />
+                        </div>
+                    ) : !call ? (
+                        <div>
+                            <h2>Call Not Found?</h2>
+                        </div>
+                    ) : (
+                        <MeetingPage call={call} />
+                    )}
+                </div>
+            </StreamTheme>
+        </StreamCall>
     );
 };
 

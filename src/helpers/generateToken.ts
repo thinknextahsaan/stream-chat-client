@@ -10,7 +10,8 @@ export const generateToken = async (userid: string) => {
         );
 
         return data.token;
-    } catch (error) {
+    } catch (error : any) {
         console.log("Error while generating token : ", error);
+        alert(error.response.data.message || error.message)
     }
 };
